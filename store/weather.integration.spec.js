@@ -1,9 +1,16 @@
+/* eslint-disable import/no-named-as-default-member */
 import { createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import axios from 'axios'
 import { state, mutations, actions } from '@/store/weather.js'
 
 jest.mock('axios')
+
+const storeConfig = {
+  state,
+  mutations,
+  actions,
+}
 const response = {
   coord: {
     lon: -42.6942,
@@ -51,42 +58,33 @@ const response = {
   name: 'Brasília',
   cod: 200,
 }
-const storeConfig = {
-  state,
-  mutations,
-  actions,
-}
-describe('Weather unit', () => {
+describe('Weather integration', () => {
   const createStore = () => {
+    const commit = jest.fn()
     const localVue = createLocalVue()
     localVue.use(Vuex)
     axios.get = jest
       .fn()
-      .mockImplementationOnce(() =>
-        Promise.resolve({ data: { results: response } })
-      )
-    // eslint-disable-next-line import/no-named-as-default-member
+      .mockImplementationOnce(() => Promise.resolve(response))
     const store = new Vuex.Store(storeConfig)
-
-    return { store }
+    return { store, commit }
   }
-
-  it('should return the value of the weather', async () => {
-    const { store } = await createStore()
-    expect(store.state.weatherObjs).toEqual(null)
-  })
-  it('should return the value of the search', async () => {
-    const { store } = await createStore()
-    expect(store.state.search).toEqual('')
-  })
-  it('should save new weather value when SET_SEARCH is calling', async () => {
+  fit('should make a get request to return the city time', async () => {
     const { store } = await createStore()
     await store.commit('SET_SEARCH', 'Picos')
-    expect(store.state.search).toEqual('Picos')
-  })
-  it('should save new weather value when SET_WEATHER is calling', async () => {
-    const { store } = await createStore()
-    await store.commit('SET_WEATHER', response)
-    expect(store.state.weatherObjs).toEqual(response)
+    const commit = jest.fn()
+    await actions.getWeather({ commit, state: { search: 'Picos' } })
+    expect(commit).toHaveBeenCalledWith('SET_WEATHER', response)
+    expect(axios.get).toHaveBeenCalledWith(
+      'https://api.openweathermap.org/data/2.5/weather',
+      {
+        params: {
+          appid: '4d8fb5b93d4af21d66a2948710284366',
+          q: 'Picos',
+          units: 'metric',
+        },
+      }
+    )
+    expect(axios.get).toHaveBeenCalledTimes(1)
   })
 })
