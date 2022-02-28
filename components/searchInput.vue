@@ -1,13 +1,15 @@
-<template class="search">
-  <div>
-    <input
-      v-model="search"
-      type="search"
-      name=""
-      data-testid="input-search"
-      placeholder="search..."
-      @keyup="doSearch()"
-    />
+<template>
+  <div class="search">
+    <div>
+      <input
+        v-model="search"
+        type="search"
+        name=""
+        data-testid="input-search"
+        placeholder="search..."
+        @keyup="doSearch()"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -27,7 +29,7 @@ export default {
   },
 }
 </script>
-<style lang="">
+<style lang="css">
 .search > div {
   display: inline-block;
   position: relative;
@@ -40,9 +42,9 @@ export default {
   width: 4px;
   height: 20px;
   position: absolute;
-  top: 40px;
+  top: 22px;
   right: 2px;
-  transform: rotate(135deg);
+  transform: rotate(145deg);
 }
 
 .search > div > input {
