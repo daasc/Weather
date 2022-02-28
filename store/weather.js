@@ -1,8 +1,12 @@
 export const state = () => ({
-  weather: {},
+  weatherObjs: null,
 })
 
-export const mutations = {}
+export const mutations = {
+  SET_WEATHER: (state, payload) => {
+    state.weatherObjs = payload
+  },
+}
 
 export const getters = {}
 
