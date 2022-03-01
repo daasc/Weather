@@ -7,7 +7,7 @@
         name=""
         data-testid="input-search"
         placeholder="search..."
-        @keyup="doSearch()"
+        @keyup.enter="doSearch()"
       />
     </div>
   </div>
