@@ -16,11 +16,11 @@
       <div class="card__next_information">
         <div>
           <span>Max</span>
-          <span>20 °</span>
+          <span>{{ weather.main.temp_max }} °</span>
         </div>
         <div>
           <span>Min</span>
-          <span>15 °</span>
+          <span>{{ weather.main.temp_min }} °</span>
         </div>
       </div>
     </div>
@@ -38,13 +38,18 @@ export default {
       const result = JSON.parse(JSON.stringify(obj))
       if (Object.keys(result).length) {
         result.main.temp = Math.ceil(result.main.temp)
+        result.main.temp_max = Math.ceil(result.main.temp_max)
+        result.main.temp_min = Math.ceil(result.main.temp_min)
         return result
       }
+      /* istanbul ignore next */
       return { main: { temp: {} } }
     },
   },
   methods: {
     urlImage() {
+      this.addColor()
+      /* istanbul ignore next */
       return require(`@/assets/img/${this.weather.weather[0].icon}.png`)
     },
     color() {
@@ -77,6 +82,10 @@ export default {
         }
         return 'day'
       }
+    },
+    addColor() {
+      document.querySelector('body').className = ''
+      document.querySelector('body').classList.add(this.color())
     },
   },
 }

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Weather</h1>
     <search-input @doSearch="search"></search-input>
     <card-weather v-if="weather"></card-weather>
   </div>
@@ -24,3 +25,9 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+h1 {
+  text-align: center;
+  color: #fff;
+}
+</style>
