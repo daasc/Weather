@@ -27,6 +27,7 @@
   </div>
 </template>
 <script>
+import imgJson from '@/db/img.json'
 export default {
   name: 'CardWeather',
   computed: {
@@ -49,8 +50,7 @@ export default {
   methods: {
     urlImage() {
       this.addColor()
-      /* istanbul ignore next */
-      return require(`@/assets/img/${this.weather.weather[0].icon}.png`)
+      return imgJson[this.weather.weather[0].icon]
     },
     color() {
       if (this.weather.weather[0].icon.includes('n')) {

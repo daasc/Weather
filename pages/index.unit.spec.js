@@ -79,7 +79,6 @@ describe('index', () => {
       },
     })
     await actions.getWeather({ commit, state: { search: 'Picos' } })
-
     const wrapper = mount(index, {
       mocks: {
         $store: store,
