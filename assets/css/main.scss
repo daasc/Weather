@@ -1,64 +1,73 @@
-.day {
+body {
   background: linear-gradient(
-    90deg,
+    360deg,
     rgba(119, 201, 247, 1) 41%,
     rgba(58, 145, 249, 1) 57%,
     rgba(65, 128, 228, 1) 64%
   );
+  height: 100vh;
+}
+.day {
+  background: linear-gradient(
+    360deg,
+    rgba(119, 201, 247, 1) 41%,
+    rgba(58, 145, 249, 1) 57%,
+    rgba(65, 128, 228, 1) 64%
+  ) !important;
 }
 .morning {
   background: linear-gradient(
-    90deg,
+    360deg,
     rgba(239, 223, 138, 1) 17%,
     rgba(143, 205, 209, 1) 42%,
     rgba(98, 193, 238, 1) 57%
-  );
+  ) !important;
 }
 .evening {
   background: linear-gradient(
-    90deg,
+    360deg,
     rgba(218, 136, 185, 1) 32%,
     rgba(110, 97, 180, 1) 51%,
     rgba(17, 29, 86, 1) 75%
-  );
+  ) !important;
 }
 .night {
   background: linear-gradient(
-    90deg,
+    360deg,
     rgba(52, 59, 143, 1) 32%,
     rgba(14, 27, 82, 1) 51%,
     rgba(6, 15, 55, 1) 75%
-  );
+  ) !important;
 }
 .day-rain {
   background: linear-gradient(
-    90deg,
+    360deg,
     rgba(134, 158, 184, 1) 46%,
     rgba(66, 81, 138, 1) 64%,
     rgba(22, 33, 86, 1) 81%
-  );
+  ) !important;
 }
 .night-rain {
   background: linear-gradient(
-    90deg,
+    360deg,
     rgba(173, 201, 216, 1) 46%,
     rgba(37, 109, 149, 1) 64%,
     rgba(10, 52, 73, 1) 81%
-  );
+  ) !important;
 }
 .day-snow {
   background: linear-gradient(
-    90deg,
+    360deg,
     rgba(156, 177, 197, 1) 35%,
     rgba(219, 220, 227, 1) 53%,
     rgba(127, 136, 154, 1) 77%
-  );
+  ) !important;
 }
-.nigth-snow {
+.night-snow {
   background: linear-gradient(
-    90deg,
+    360deg,
     rgba(121, 146, 178, 1) 35%,
     rgba(74, 100, 136, 1) 53%,
     rgba(33, 46, 73, 1) 77%
-  );
+  ) !important;
 }

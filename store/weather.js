@@ -17,7 +17,6 @@ export const getters = {}
 
 export const actions = {
   async getWeather({ commit, state }) {
-    // https://api.openweathermap.org/data/2.5/weather?q=Bras%C3%ADlia%20&appid=4d8fb5b93d4af21d66a2948710284366&units=metric
     const response = await axios.get(
       'https://api.openweathermap.org/data/2.5/weather',
       {
@@ -28,7 +27,7 @@ export const actions = {
         },
       }
     )
-    commit('SET_WEATHER', response)
+    commit('SET_WEATHER', response.data)
   },
   //
 }

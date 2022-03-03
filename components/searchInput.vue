@@ -7,7 +7,7 @@
         name=""
         data-testid="input-search"
         placeholder="search..."
-        @keyup="doSearch()"
+        @keyup.enter="doSearch()"
       />
     </div>
   </div>
@@ -42,7 +42,7 @@ export default {
   width: 4px;
   height: 20px;
   position: absolute;
-  top: 22px;
+  top: 29px;
   right: 2px;
   transform: rotate(145deg);
 }
@@ -53,7 +53,7 @@ export default {
   background: transparent;
   width: 25px;
   height: 25px;
-  padding: 10px;
+  padding: 15px;
   border: solid 3px white;
   outline: none;
   border-radius: 35px;

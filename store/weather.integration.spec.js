@@ -65,7 +65,7 @@ describe('Weather integration', () => {
     localVue.use(Vuex)
     axios.get = jest
       .fn()
-      .mockImplementationOnce(() => Promise.resolve(response))
+      .mockImplementationOnce(() => Promise.resolve({ data: response }))
     const store = new Vuex.Store(storeConfig)
     return { store, commit }
   }

@@ -2,14 +2,13 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import axios from 'axios'
+import Vue from 'vue'
 import index from '@/pages/index'
 import { state, mutations, actions } from '@/store/weather.js'
 import searchInput from '@/components/searchInput'
-const storeConfig = {
-  state,
-  mutations,
-  actions,
-}
+import cardWeather from '@/components/cardWeather'
+jest.mock('axios')
+
 const response = {
   coord: {
     lon: -42.6942,
@@ -58,16 +57,38 @@ const response = {
   cod: 200,
 }
 
+const localVue = createLocalVue()
+localVue.use(Vuex)
+
 describe('index', () => {
-  const mountStore = () => {
-    const localVue = createLocalVue()
-    localVue.use(Vuex)
+  const mountStore = async () => {
+    const commit = jest.fn()
+
     axios.get = jest
       .fn()
-      .mockImplementationOnce(() => Promise.resolve(response))
-    const store = new Vuex.Store(storeConfig)
-    const wrapper = mount(index, { mocks: { $store: store, $axios: axios } })
-    return { store, wrapper }
+      .mockReturnValue(() => Promise.resolve({ data: response }))
+
+    const store = new Vuex.Store({
+      modules: {
+        weather: {
+          state,
+          mutations,
+          actions,
+          namespaced: true,
+        },
+      },
+    })
+    await actions.getWeather({ commit, state: { search: 'Picos' } })
+    const wrapper = mount(index, {
+      mocks: {
+        $store: store,
+      },
+      localVue,
+    })
+
+    await Vue.nextTick()
+
+    return { store, wrapper, commit }
   }
   it('should mount the component', async () => {
     const { wrapper } = await mountStore()
@@ -77,5 +98,20 @@ describe('index', () => {
     const { wrapper } = await mountStore()
     const search = wrapper.findComponent(searchInput)
     expect(search.vm).toBeDefined()
+  })
+  it('should find the cardWeather component', async () => {
+    const { wrapper } = await mountStore()
+    const card = wrapper.findComponent(cardWeather)
+    expect(card.exists()).toBe(false)
+  })
+  it('should emit an event when input type search is clicked', async () => {
+    const { wrapper } = await mountStore()
+    const search = wrapper.find('[data-testid="input-search"]')
+    await search.setValue('Picos')
+    await search.trigger('keyup.enter')
+    await Vue.nextTick()
+
+    const card = wrapper.findComponent(cardWeather)
+    expect(card.exists()).toBe(true)
   })
 })
