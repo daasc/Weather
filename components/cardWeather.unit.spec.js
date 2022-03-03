@@ -6,7 +6,7 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('CardWeather', () => {
-  const createStore = () => {
+  const createStore = ({ icon = '10n', id = 502 }) => {
     const store = new Vuex.Store({
       modules: {
         weather: {
@@ -18,10 +18,10 @@ describe('CardWeather', () => {
               },
               weather: [
                 {
-                  id: 502,
+                  id,
                   main: 'Rain',
                   description: 'heavy intensity rain',
-                  icon: '10n',
+                  icon,
                 },
               ],
               base: 'stations',
@@ -73,15 +73,38 @@ describe('CardWeather', () => {
     return { store, wrapper }
   }
   it('should mount the component', () => {
-    const { wrapper } = createStore()
+    const { wrapper } = createStore({})
     expect(wrapper.vm).toBeDefined()
   })
 
   it('should show the time data returned by the request', async () => {
-    const { wrapper } = await createStore()
+    const { wrapper } = await createStore({})
     const card = wrapper.find('[data-testid="card-weather"]')
     const number = wrapper.find('[data-testid="card-number"]')
     expect(number.text()).toContain('24')
     expect(card.exists()).toBe(true)
+  })
+  it('should contain the night-snow class', async () => {
+    const { wrapper } = await createStore({ icon: '02n', id: 600 })
+    const color = wrapper.find('[data-testid="color-weather"]')
+    expect(color.classes()).toContain('night-snow')
+  })
+
+  it('should contain the night class', async () => {
+    const { wrapper } = await createStore({ icon: '02n', id: 700 })
+    const color = wrapper.find('[data-testid="color-weather"]')
+    expect(color.classes()).toContain('night')
+  })
+
+  it('should contain the day-rain class', async () => {
+    const { wrapper } = await createStore({ icon: '02d', id: 500 })
+    const color = wrapper.find('[data-testid="color-weather"]')
+    expect(color.classes()).toContain('day-rain')
+  })
+
+  it('should contain the day-snow class', async () => {
+    const { wrapper } = await createStore({ icon: '02d', id: 600 })
+    const color = wrapper.find('[data-testid="color-weather"]')
+    expect(color.classes()).toContain('day-snow')
   })
 })

@@ -1,6 +1,6 @@
 <template>
   <div class="card" data-testid="card-weather">
-    <div class="card__weather" :class="color()">
+    <div class="card__weather" :class="color()" data-testid="color-weather">
       <div class="icons">
         <img :src="urlImage()" alt="" />
       </div>
@@ -43,8 +43,11 @@ export default {
         result.main.temp_min = Math.ceil(result.main.temp_min)
         return result
       }
-      /* istanbul ignore next */
-      return { main: { temp: {} } }
+      return {
+        name: '',
+        main: { temp: {}, temp_max: 0, temp_min: 0 },
+        weather: [{ main: 0, icon: '' }],
+      }
     },
   },
   methods: {
