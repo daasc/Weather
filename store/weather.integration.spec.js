@@ -1,11 +1,13 @@
 /* eslint-disable import/no-named-as-default-member */
 import { createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
+import Vue from 'vue'
 import axios from 'axios'
 import { state, mutations, actions } from '@/store/weather.js'
 
-jest.mock('axios')
-
+jest.mock('axios', () => ({
+  get: jest.fn(),
+}))
 const storeConfig = {
   state,
   mutations,
@@ -59,18 +61,25 @@ const response = {
   cod: 200,
 }
 describe('Weather integration', () => {
-  const createStore = () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+  const createStore = async ({ error = false }) => {
     const commit = jest.fn()
     const localVue = createLocalVue()
     localVue.use(Vuex)
-    axios.get = jest
-      .fn()
-      .mockImplementationOnce(() => Promise.resolve({ data: response }))
+    if (error) {
+      axios.get.mockReturnValue(Promise.reject(new Error('Error')))
+    } else {
+      axios.get.mockReturnValue(Promise.resolve({ data: response }))
+    }
     const store = new Vuex.Store(storeConfig)
+    await Vue.nextTick()
+
     return { store, commit }
   }
-  fit('should make a get request to return the city time', async () => {
-    const { store } = await createStore()
+  it('should make a get request to return the city time', async () => {
+    const { store } = await createStore({})
     await store.commit('SET_SEARCH', 'Picos')
     const commit = jest.fn()
     await actions.getWeather({ commit, state: { search: 'Picos' } })
@@ -86,5 +95,25 @@ describe('Weather integration', () => {
       }
     )
     expect(axios.get).toHaveBeenCalledTimes(1)
+  })
+
+  it('should make a error get request to return the city time', async () => {
+    const { store } = await createStore({ error: true })
+    await store.commit('SET_SEARCH', 'ffafa')
+    await store.dispatch('getWeather')
+    const commit = jest.fn()
+    await actions.getWeather({ commit, state: { search: 'ffafa' } })
+    expect(axios.get).toHaveBeenCalledWith(
+      'https://api.openweathermap.org/data/2.5/weather',
+      {
+        params: {
+          appid: '4d8fb5b93d4af21d66a2948710284366',
+          q: 'ffafa',
+          units: 'metric',
+        },
+      }
+    )
+    expect(axios.get).toHaveBeenCalledTimes(2)
+    expect(store.state.errorRequest).toBe('Error: City ffafa not found')
   })
 })

@@ -94,74 +94,83 @@ export default {
 }
 </script>
 <style lang="scss">
-.card {
-  width: 25%;
-  height: 80vh;
-  position: relative;
-  margin: 0 auto;
-  display: flex;
-  border-radius: 15px;
-  flex-direction: column;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  .card__weather {
-    width: 100%;
-    height: 70%;
-    border-radius: 15px 15px 0px 0px;
+@media (min-width: 0px) {
+  .card {
+    width: 99%;
+    height: 75vh;
+    position: relative;
+    margin-top: 35px;
     display: flex;
+    border-radius: 15px;
     flex-direction: column;
-    .icons {
-      width: 35%;
-      height: 30%;
-      align-self: flex-end;
-      margin: 5px;
-      img {
-        width: 100%;
-      }
-    }
-    .card__results {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    .card__weather {
       width: 100%;
-      height: 70%;
+      height: 80%;
+      border-radius: 15px 15px 0px 0px;
       display: flex;
       flex-direction: column;
-      gap: 23%;
-      .card__main,
-      .card__number {
-        color: white;
+      .icons {
+        width: 35%;
+        height: 30%;
+        align-self: flex-end;
+        margin: 5px;
+        img {
+          width: 100%;
+        }
+      }
+      .card__results {
+        width: 100%;
+        height: 70%;
+        display: flex;
+        flex-direction: column;
+        gap: 23%;
+        .card__main,
+        .card__number {
+          color: white;
+          text-align: center;
+        }
+        .card__number {
+          font-size: 4em;
+          font-weight: bolder;
+        }
+        .card__main {
+          font-size: 2em;
+        }
+      }
+    }
+
+    .card__content {
+      width: 100%;
+      height: 20%;
+      background: white;
+      color: #a6a3a3;
+      font-weight: bold;
+      .card__name_city {
+        padding: 10px;
+        font-size: 20px;
         text-align: center;
       }
-      .card__number {
-        font-size: 4em;
-        font-weight: bolder;
-      }
-      .card__main {
-        font-size: 2em;
+
+      .card__next_information {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        div {
+          display: flex;
+          justify-content: space-between;
+          padding: 0px 30px;
+        }
       }
     }
   }
+}
 
-  .card__content {
-    width: 100%;
-    height: 30%;
-    background: white;
-    color: #d4d0db;
-    font-weight: bold;
-    .card__name_city {
-      padding: 10px;
-      font-size: 20px;
-      text-align: center;
-    }
-
-    .card__next_information {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-
-      div {
-        display: flex;
-        justify-content: space-between;
-        padding: 0px 30px;
-      }
-    }
+@media (min-width: 850px) {
+  .card {
+    width: 25%;
+    margin: 0 auto;
   }
 }
 </style>
