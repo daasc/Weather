@@ -3,15 +3,19 @@
     <h1>Weather</h1>
     <search-input @doSearch="search"></search-input>
     <card-weather v-if="weather"></card-weather>
+    <card-error-request
+      v-if="$store.state.weather.errorRequest"
+    ></card-error-request>
   </div>
 </template>
 
 <script>
 import CardWeather from '@/components/cardWeather.vue'
 import searchInput from '@/components/searchInput.vue'
+import CardErrorRequest from '@/components/cardErrorRequest.vue'
 export default {
   name: 'IndexPage',
-  components: { searchInput, CardWeather },
+  components: { searchInput, CardWeather, CardErrorRequest },
   computed: {
     weather() {
       return this.$store.state.weather.weatherObjs !== null

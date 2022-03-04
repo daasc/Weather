@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import { mount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import cardWeather from '@/components/cardWeather'

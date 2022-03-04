@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import { createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import axios from 'axios'
@@ -65,7 +66,6 @@ describe('Weather unit', () => {
       .mockImplementationOnce(() =>
         Promise.resolve({ data: { results: response } })
       )
-    // eslint-disable-next-line import/no-named-as-default-member
     const store = new Vuex.Store(storeConfig)
 
     return { store }
@@ -75,6 +75,10 @@ describe('Weather unit', () => {
     const { store } = await createStore()
     expect(store.state.weatherObjs).toEqual(null)
   })
+  it('should return the value of the errorRequest', async () => {
+    const { store } = await createStore()
+    expect(store.state.errorRequest).toEqual('')
+  })
   it('should return the value of the search', async () => {
     const { store } = await createStore()
     expect(store.state.search).toEqual('')
@@ -83,6 +87,11 @@ describe('Weather unit', () => {
     const { store } = await createStore()
     await store.commit('SET_SEARCH', 'Picos')
     expect(store.state.search).toEqual('Picos')
+  })
+  it('should save new weather value when SET_ERROR is calling', async () => {
+    const { store } = await createStore()
+    await store.commit('SET_ERROR', 'error')
+    expect(store.state.errorRequest).toEqual('error')
   })
   it('should save new weather value when SET_WEATHER is calling', async () => {
     const { store } = await createStore()

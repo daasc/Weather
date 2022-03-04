@@ -7,6 +7,8 @@ import index from '@/pages/index'
 import { state, mutations, actions } from '@/store/weather.js'
 import searchInput from '@/components/searchInput'
 import cardWeather from '@/components/cardWeather'
+import cardErrorRequest from '@/components/cardErrorRequest'
+
 jest.mock('axios')
 
 const response = {
@@ -67,7 +69,9 @@ describe('index', () => {
     axios.get = jest
       .fn()
       .mockReturnValue(() => Promise.resolve({ data: response }))
-
+    axios.get = jest
+      .fn()
+      .mockReturnValue(() => Promise.reject(new Error('error')))
     const store = new Vuex.Store({
       modules: {
         weather: {
@@ -99,19 +103,34 @@ describe('index', () => {
     const search = wrapper.findComponent(searchInput)
     expect(search.vm).toBeDefined()
   })
+
   it('should find the cardWeather component', async () => {
     const { wrapper } = await mountStore()
     const card = wrapper.findComponent(cardWeather)
     expect(card.exists()).toBe(false)
   })
   it('should emit an event when input type search is clicked', async () => {
-    const { wrapper } = await mountStore()
+    const { wrapper, store } = await mountStore()
     const search = wrapper.find('[data-testid="input-search"]')
     await search.setValue('Picos')
     await search.trigger('keyup.enter')
+    store.commit('weather/SET_WEATHER', response)
+    await Vue.nextTick()
+    const card = await wrapper.findComponent(cardWeather)
+    expect(card.exists()).toBe(true)
+  })
+
+  it('should show the error card when the request goes wrong this when the input type search is clicked', async () => {
+    const { wrapper, store } = await mountStore()
+    const search = wrapper.find('[data-testid="input-search"]')
+    await search.setValue('GGGGGAA')
+    await search.trigger('keyup.enter')
+    store.commit('weather/SET_ERROR', 'error')
     await Vue.nextTick()
 
-    const card = wrapper.findComponent(cardWeather)
+    const message = await wrapper.find('[data-testid="message-error"]')
+    const card = wrapper.findComponent(cardErrorRequest)
+    expect(message.text()).toContain('error')
     expect(card.exists()).toBe(true)
   })
 })
