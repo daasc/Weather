@@ -23,7 +23,7 @@ export default {
   methods: {
     doSearch() {
       if (this.search !== '') {
-        this.$emit('doSearch', { term: this.search })
+        this.$emit('doSearch', { term: this.search.trim() })
       }
     },
   },

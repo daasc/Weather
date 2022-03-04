@@ -106,7 +106,7 @@ export default {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     .card__weather {
       width: 100%;
-      height: 80%;
+      height: 77.5%;
       border-radius: 15px 15px 0px 0px;
       display: flex;
       flex-direction: column;
@@ -142,7 +142,7 @@ export default {
 
     .card__content {
       width: 100%;
-      height: 20%;
+      height: 22.5%;
       background: white;
       color: #a6a3a3;
       font-weight: bold;
